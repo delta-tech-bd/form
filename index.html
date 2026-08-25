@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>  
+    <meta charset="UTF-8" />  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>মাদ্রাসা ম্যানেজমেন্ট সিস্টেম</title> 
+   
+    <!-- ফেভিকন আইকন --> 
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/19lUSAdtY0qnUtoVPmmPqhbVaMtMIzYsh=w1000" />
+    <link href="https://fonts.googleapis.com/css2?family=SolaimanLipi&display=swap" rel="stylesheet" />
+    
+    <style>    
+        /* গ্লোবাল স্টাইল এবং ফন্ট ফিক্স */    
+        * { 
+            box-sizing: border-box; 
+            font-family: 'SolaimanLipi', sans-serif !important; 
+        }
+        html, body { 
+            margin: 0; 
+            padding: 0; 
+            height: 100vh; 
+            width: 100vw; 
+            overflow: hidden; 
+            background: #0f172a;
+            color: #1e293b; 
+        }
+
+        /* সেশন/অ্যাপ লোডার */
+        #bootLoader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            gap: 12px; z-index: 100000;
+            background: #ffffff;
+        }
+        #bootLoader .spinner {
+            width: 36px; height: 36px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #0284c7;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        #bootLoader span { color: #64748b; font-size: 14px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* মেইন কনটেইনার ও আইফ্রেম (Safe Area Dynamic Padding) */
+        .main-container { 
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; 
+            display: none; 
+            background-color: #0f172a;
+            padding-top: env(safe-area-inset-top, 35px);
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            display: block;
+            background-color: #0f172a; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bootLoader">
+        <div class="spinner"></div>
+        <span>অ্যাপ লোড হচ্ছে…</span>
+    </div>
+
+    <div class="main-container" id="mainAppContainer"> 
+        <iframe id="appIframe" src=""></iframe>
+    </div>
+     
+    <script>
+        var GOOGLE_SCRIPT_API = "https://script.google.com/macros/s/AKfycbwy_sGNfGfclxqc1ldzyS7wjgR1Y8hLOJvVciqqu11aYCkXJ_woSVTaCLVBlfbR-mFE/exec";
+
+        function hideBootLoader() {
+            var loader = document.getElementById('bootLoader');
+            if (loader) loader.style.display = 'none';
+        }
+
+        function openApp() {
+            hideBootLoader();
+            document.getElementById('appIframe').src = GOOGLE_SCRIPT_API + "?loadApp=true";
+            document.getElementById('mainAppContainer').style.display = 'block';
+        }
+
+        // লগইন ছাড়াই পেজ লোড হলে সরাসরি অ্যাপ ওপেন হবে
+        window.addEventListener('DOMContentLoaded', function() {
+            openApp();
+        });
+    </script>
+
+    <!-- সিকিউরিটি স্ক্রিপ্ট -->
+    <script>
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 73) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 74) return false;
+            if (e.ctrlKey && e.keyCode == 85) return false;
+        };
+    </script>
+</body>
+</html>
